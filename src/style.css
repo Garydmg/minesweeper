@@ -1,0 +1,15 @@
+.cell {
+    background-color: rgb(44, 44, 44);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-style: solid;
+    border-width: 1px;
+    float: left;
+    margin: 1px;
+    border-radius: 5px;
+}
+
+.board-row {
+    height: 40px;
+}

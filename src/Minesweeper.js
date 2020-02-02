@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Board from './Board';
+import GameBoard from './component/GameBoard';
+import './style.css';
 
-class Minesweeper extends React.PureComponent {
+class Minesweeper extends Component {
     constructor(props) {
         super(props)
-        const n = 10;
-        const numMines = 10;
+        let n = 10;
+        let numMines = 80;
         this.state = {
             n,
             numMines,
@@ -31,10 +33,40 @@ class Minesweeper extends React.PureComponent {
             }
         };
     }
-    
+
+    handleChange = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+    }
+
     render() {
         return (
-            <div>Minesweeper</div>
+            <div className="game-wrapper">
+                <div className="title">
+                    <h1>Minesweeper</h1>
+                </div>
+                <div className="param">
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Size:
+                            <input type="text" value={this.state.n} onChange={this.handleChange} name="size" />
+                        </label>
+                        <label>
+                            Number of Mines:
+                            <input type="text" value={this.state.numMines} onChange={this.handleChange} name="numMines" />
+                        </label>
+                        <input type="submit" value="Start Game" />
+                    </form>
+                </div>
+                <div className="board">
+                    <GameBoard board={this.state.board} icons={this.state.icons}/>
+                </div>
+            </div>
         );
     }
 }
