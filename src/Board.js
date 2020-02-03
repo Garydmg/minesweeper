@@ -28,6 +28,9 @@ class Board {
 
     addMines(board, size, targetNumMines) {
         let numMines = 0;
+        // truncate num of mines if it cannot fit into the board
+        targetNumMines = Math.min(targetNumMines, size * size);
+        
         while (numMines < targetNumMines) {
             // generate random rows and columns
             let rowPos = this.getRandom(size);

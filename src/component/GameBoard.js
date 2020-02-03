@@ -2,15 +2,6 @@ import React, { Component } from 'react';
 import Cell from './Cell';
 
 export default class Board extends Component {
-    constructor(props) {
-        super(props);
-        const { board, icons } = this.props;
-        this.state = {
-            board,
-            icons
-        }
-    }
-
     renderRows = (data, icons) => {
         return data.map((item) => {
             const {rowNum, colNum} = item;
@@ -35,7 +26,7 @@ export default class Board extends Component {
     }
     
     render() {
-        const { board, icons } = this.state;
+        const { board, icons } = this.props;
         return (
             <div>
                 <div className="board-info">
@@ -43,7 +34,6 @@ export default class Board extends Component {
                         this.renderCells(board.content, icons)
                     }
                 </div>
-                <h1>{board.rowNum}</h1>
             </div>
         );
     }

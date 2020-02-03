@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board';
 import GameBoard from './component/GameBoard';
-import './style.css';
+import './index.css';
 
 class Minesweeper extends Component {
     constructor(props) {
@@ -36,15 +36,10 @@ class Minesweeper extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log(this.boardSize.value);
-        console.log(this.numMines.value);
         this.setState({
             size: this.boardSize.value,
             numMines: this.numMines.value,
             board: new Board(this.boardSize.value, this.numMines.value)
-        }, () => {
-            console.log(this.state.size);
-            console.log(this.state.board);
         });
     }
 
@@ -57,18 +52,24 @@ class Minesweeper extends Component {
                 <div className="param">
                     <form onSubmit={this.handleSubmit}>
                         <label>
-                            Size:
+                            Board Size
                             <input type="text" 
+                                placeholder={"e.g. 10"}
                                 ref={e => this.boardSize = e} 
-                                name="size" />
+                                name="size" 
+                                className="input-box"
+                            />
                         </label>
                         <label>
-                            Number of Mines:
+                            # of Mines
                             <input type="text" 
+                                placeholder={"e.g. 20"}
                                 ref={e => this.numMines = e} 
-                                name="numMines" />
+                                name="numMines" 
+                                className="input-box"
+                            />
                         </label>
-                        <input type="submit" value="Start Game" />
+                        <input className="button" type="submit" value="Start Game" />
                     </form>
                 </div>
                 <div className="board">
