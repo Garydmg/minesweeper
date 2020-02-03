@@ -32,14 +32,16 @@ export default class GameBoard extends Component {
         const { board } = this.state;
         if (board.isRevealed(rowNum, colNum)) return;
         if (board.isMine(rowNum, colNum)) {
-            alert("You step on a mine!");
+            alert("Game Over: You just stepped on a mine!");
+            board.revealAll();
             return;
         }
+        
         this.setState({
             board: this.state.board.getNeighborMines(rowNum, colNum)
         }, () => {
-            // console.log(this.state.board);
-        });
+
+        });  
     }
 
     /**
@@ -84,6 +86,7 @@ export default class GameBoard extends Component {
     
     render() {
         const { board, icons } = this.state;
+        let message = board.isWinning() ? <h2>Congrats! You win the game!</h2> : <h2>{}</h2>
         return (
             <div>
                 <div className="param">
@@ -109,10 +112,20 @@ export default class GameBoard extends Component {
                         <input className="button" type="submit" value="Start Game" />
                     </form>
                 </div>
+                <div>
+                    <h2>Your challenge</h2>
+                    <p>Board size: {board.size}</p>
+                    <p>
+                        There are {board.numMines} mines contained in {board.numCellsUnrevealed()} unrevealed cells
+                    </p>
+                </div>
                 <div className="board-info">
                     {
                         this.renderBoard(board.content, icons)
                     }
+                </div>
+                <div className="winning-message">
+                    {message}
                 </div>
             </div>
         );

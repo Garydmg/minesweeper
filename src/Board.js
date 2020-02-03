@@ -5,6 +5,8 @@ class Board {
     constructor(n, numMines) {
         this.size = n;
         this.numMines = numMines;
+        this.numCellsRevealed = 0;
+        this.numbered = 0;
         this.content = this.initializeBoard(n, numMines);
         this.directions = [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]];
     }
@@ -23,7 +25,7 @@ class Board {
                     rowNum: i,
                     colNum: j,
                     isMine: false,
-                    isEmpty: false,
+                    isNumbered: false,
                     isRevealed: false,
                     numNeighborMines: 0
                 }
@@ -64,6 +66,10 @@ class Board {
         return this.content[i][j].isRevealed;
     }
 
+    isNumbered(i, j) {
+        return this.content[i][j].isNumbered;
+    }
+
     isMine(i, j) {
         return this.content[i][j].isMine;
     }
@@ -74,6 +80,7 @@ class Board {
 
     setNeightborMines(i, j, num) {
         this.content[i][j].numNeighborMines = num;
+        this.content[i][j].isNumbered = true;
     }
 
     setRevealed(i, j) {
@@ -106,11 +113,15 @@ class Board {
 
         // if there is a count, no need to recurse further
         if (count !== 0) {
-            this.setNeightborMines(i, j, count);
+            if (!this.isNumbered(i, j)) {
+                this.setNeightborMines(i, j, count);
+                this.numbered++;
+            }
             return;
         }
         // if there is no count, mark current location as visited/revealed
         this.setRevealed(i, j);
+        this.numCellsRevealed++;
 
         // check all 8 directions
         for (const dir of this.directions) {
@@ -140,6 +151,30 @@ class Board {
             }
         }
         return count;
+    }
+
+    numCellsUnrevealed() {
+        return this.size * this.size - this.numCellsRevealed - this.numbered;
+    }
+
+    /**
+     * Winning criterium:
+     * # mines left = total number of cells - numbers labeled - number revealed
+     */
+    isWinning() {
+        return (this.numCellsUnrevealed() === parseInt(this.numMines)) ? true : false;
+    }
+
+    
+    /**
+     * Reveal the entire board - if we lose the game
+     */
+    revealAll() {
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                this.setRevealed(i, j);
+            }
+        }
     }
 
 };  
