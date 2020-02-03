@@ -44,10 +44,6 @@ class Minesweeper extends Component {
                     board={this.state.board} 
                     icons={this.state.icons}
                 />
-                <GameBoard 
-                    board={this.state.board} 
-                    icons={this.state.icons}
-                />
             </div>
         );
     }

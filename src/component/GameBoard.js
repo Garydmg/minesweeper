@@ -37,6 +37,8 @@ export default class GameBoard extends Component {
         }
         this.setState({
             board: this.state.board.getNeighborMines(rowNum, colNum)
+        }, () => {
+            // console.log(this.state.board);
         });
     }
 

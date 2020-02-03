@@ -72,10 +72,13 @@ class Board {
         return this.content[i][j].isEmpty;
     }
 
-    setNeightbors(i, j, num) {
+    setNeightborMines(i, j, num) {
         this.content[i][j].numNeighborMines = num;
     }
 
+    setRevealed(i, j) {
+        this.content[i][j].isRevealed = true;
+    }
 
     getRandom(size) {
         // range from 0 to size - 1
@@ -83,26 +86,60 @@ class Board {
     }
     
     /**
-     * Get number of neighbors that are mines
+     * Click to reveal part of the board that represents # of mines nearby
      * @param i, j: row and col number
-     * @returns: 0-8, -1 if the cell itself is a mine
      */
     getNeighborMines(i, j) {
+        // game over
         if (this.isMine(i, j)) {
             return -1;
         }
-        let numMines = 0;
+        this.dfs(i, j);
+        return this;
+    }
+
+    /**
+     * Use depth-first search to recursively find # of nearby mines
+     */
+    dfs(i, j) {
+        let count = this.countMines(i, j);
+
+        // if there is a count, no need to recurse further
+        if (count !== 0) {
+            this.setNeightborMines(i, j, count);
+            return;
+        }
+        // if there is no count, mark current location as visited/revealed
+        this.setRevealed(i, j);
+
+        // check all 8 directions
+        for (const dir of this.directions) {
+            let rowPos = i + dir[0];
+            let colPos = j + dir[1];
+            if (this.checkBound(rowPos, colPos)) {
+                // if it is not visited and not a mine, visit it
+                if (!this.isRevealed(rowPos, colPos) && !this.isMine(rowPos, colPos)) {
+                    this.dfs(rowPos, colPos);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Count number of mines in all directions around (i, j)
+     */
+    countMines(i, j) {
+        let count = 0;
         for (const dir of this.directions) {
             let rowPos = i + dir[0];
             let colPos = j + dir[1];
             if (this.checkBound(rowPos, colPos)) {
                 if (this.isMine(rowPos, colPos)) {
-                    numMines++;
+                    count++;
                 }
             }
         }
-        this.setNeightbors(i, j, numMines);
-        return this;
+        return count;
     }
 
 };  
