@@ -6,12 +6,12 @@ import './style.css';
 class Minesweeper extends Component {
     constructor(props) {
         super(props)
-        let n = 10;
-        let numMines = 80;
+        let size = 10;
+        let numMines = 20;
         this.state = {
-            n,
+            size,
             numMines,
-            board: new Board(n, numMines),
+            board: new Board(size, numMines),
             icons: {
                 blank: 'http://i.imgur.com/HM1e3Tbb.jpg',
                 pressed: 'http://i.imgur.com/bGT8xGEb.jpg',
@@ -34,14 +34,18 @@ class Minesweeper extends Component {
         };
     }
 
-    handleChange = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        });
-    }
-
     handleSubmit = (e) => {
         e.preventDefault();
+        console.log(this.boardSize.value);
+        console.log(this.numMines.value);
+        this.setState({
+            size: this.boardSize.value,
+            numMines: this.numMines.value,
+            board: new Board(this.boardSize.value, this.numMines.value)
+        }, () => {
+            console.log(this.state.size);
+            console.log(this.state.board);
+        });
     }
 
     render() {
@@ -54,11 +58,15 @@ class Minesweeper extends Component {
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Size:
-                            <input type="text" value={this.state.n} onChange={this.handleChange} name="size" />
+                            <input type="text" 
+                                ref={e => this.boardSize = e} 
+                                name="size" />
                         </label>
                         <label>
                             Number of Mines:
-                            <input type="text" value={this.state.numMines} onChange={this.handleChange} name="numMines" />
+                            <input type="text" 
+                                ref={e => this.numMines = e} 
+                                name="numMines" />
                         </label>
                         <input type="submit" value="Start Game" />
                     </form>
