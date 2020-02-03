@@ -34,46 +34,16 @@ class Minesweeper extends Component {
         };
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.setState({
-            size: this.boardSize.value,
-            numMines: this.numMines.value,
-            board: new Board(this.boardSize.value, this.numMines.value)
-        });
-    }
-
     render() {
         return (
             <div className="game-wrapper">
-                {/* title and menu bar */}
                 <div className="title">
                     <h1>Minesweeper</h1>
                 </div>
-                <div className="param">
-                    <form onSubmit={this.handleSubmit}>
-                        <label>
-                            Board Size
-                            <input type="text" 
-                                placeholder={"e.g. 10"}
-                                ref={e => this.boardSize = e} 
-                                name="size" 
-                                className="input-box"
-                            />
-                        </label>
-                        <label>
-                            # of Mines
-                            <input type="text" 
-                                placeholder={"e.g. 20"}
-                                ref={e => this.numMines = e} 
-                                name="numMines" 
-                                className="input-box"
-                            />
-                        </label>
-                        <input className="button" type="submit" value="Start Game" />
-                    </form>
-                </div>
-                {/* gameboard */}
+                <GameBoard 
+                    board={this.state.board} 
+                    icons={this.state.icons}
+                />
                 <GameBoard 
                     board={this.state.board} 
                     icons={this.state.icons}
