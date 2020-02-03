@@ -15,13 +15,10 @@ export default class Board extends Component {
         - flag
         - bombs: [] 0-8
      */
-    constructor(props) {
-        super(props);
-        const { board, icons } = this.props;
-        this.state = {
-            board,
-            icons
-        }
+ 
+    state = {
+        board: this.props.board,
+        icons: this.props.icons
     }
 
     revealNeighbors = (rowNum, colNum) => {
@@ -32,8 +29,6 @@ export default class Board extends Component {
             alert("You step on a mine!");
             return;
         }
-        console.log(rowNum);
-        console.log(colNum);
         this.setState({
             board: this.state.board.getNeighborMines(rowNum, colNum)
         });
