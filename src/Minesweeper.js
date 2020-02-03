@@ -46,6 +46,7 @@ class Minesweeper extends Component {
     render() {
         return (
             <div className="game-wrapper">
+                {/* title and menu bar */}
                 <div className="title">
                     <h1>Minesweeper</h1>
                 </div>
@@ -72,9 +73,11 @@ class Minesweeper extends Component {
                         <input className="button" type="submit" value="Start Game" />
                     </form>
                 </div>
-                <div className="board">
-                    <GameBoard board={this.state.board} icons={this.state.icons}/>
-                </div>
+                {/* gameboard */}
+                <GameBoard 
+                    board={this.state.board} 
+                    icons={this.state.icons}
+                />
             </div>
         );
     }

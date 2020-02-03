@@ -1,3 +1,6 @@
+/**
+ * Board API
+ */
 class Board {
     constructor(n, numMines) {
         this.size = n;
@@ -30,7 +33,7 @@ class Board {
         let numMines = 0;
         // truncate num of mines if it cannot fit into the board
         targetNumMines = Math.min(targetNumMines, size * size);
-        
+
         while (numMines < targetNumMines) {
             // generate random rows and columns
             let rowPos = this.getRandom(size);
@@ -50,25 +53,49 @@ class Board {
     
     /**
      * Get number of neighbors that are mines
-     * @param board
+     * @param i, j: row and col number
      * @returns: 0-8, -1 if the cell itself is a mine
      */
     getNeighborMines(i, j) {
-        if (this.content[i][j].isMine) {
+        if (this.isMine(i, j)) {
             return -1;
         }
         let numMines = 0;
         for (const dir of this.directions) {
-            let deltaRow = dir[0];
-            let deltaCol = dir[1];
-            if (this.content[i + deltaRow][j + deltaCol].isMine) {
-                numMines++;
+            let rowPos = i + dir[0];
+            let colPos = j + dir[1];
+            if (this.checkBound(rowPos, colPos)) {
+                if (this.isMine(rowPos, colPos)) {
+                    numMines++;
+                }
             }
         }
-        this.content[i][j] = numMines;
-        return numMines;
+        this.setNeightbors(i, j, numMines);
+        return this;
+    }
+
+    checkBound(i, j) {
+        if (i >= 0 && i < this.size && j >= 0 && j < this.size) {
+            return true;
+        }
+        return false;
+    }
+
+    isRevealed(i, j) {
+        return this.content[i][j].isRevealed;
+    }
+
+    isMine(i, j) {
+        return this.content[i][j].isMine;
     }
     
+    isEmpty(i, j) {
+        return this.content[i][j].isEmpty;
+    }
+
+    setNeightbors(i, j, num) {
+        this.content[i][j].numNeighborMines = num;
+    }
 
 };  
 
