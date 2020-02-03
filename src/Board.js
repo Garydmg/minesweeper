@@ -8,7 +8,10 @@ class Board {
         this.content = this.initializeBoard(n, numMines);
         this.directions = [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]];
     }
-
+    
+    /**
+     * Board initialization
+     */
     initializeBoard(size, numMines) {
         let board = [];
         // build rows
@@ -46,6 +49,34 @@ class Board {
         return board;
     }
 
+
+    /**
+     * Getters and setters
+     */
+    checkBound(i, j) {
+        if (i >= 0 && i < this.size && j >= 0 && j < this.size) {
+            return true;
+        }
+        return false;
+    }
+
+    isRevealed(i, j) {
+        return this.content[i][j].isRevealed;
+    }
+
+    isMine(i, j) {
+        return this.content[i][j].isMine;
+    }
+    
+    isEmpty(i, j) {
+        return this.content[i][j].isEmpty;
+    }
+
+    setNeightbors(i, j, num) {
+        this.content[i][j].numNeighborMines = num;
+    }
+
+
     getRandom(size) {
         // range from 0 to size - 1
         return Math.floor(Math.random() * size);
@@ -72,29 +103,6 @@ class Board {
         }
         this.setNeightbors(i, j, numMines);
         return this;
-    }
-
-    checkBound(i, j) {
-        if (i >= 0 && i < this.size && j >= 0 && j < this.size) {
-            return true;
-        }
-        return false;
-    }
-
-    isRevealed(i, j) {
-        return this.content[i][j].isRevealed;
-    }
-
-    isMine(i, j) {
-        return this.content[i][j].isMine;
-    }
-    
-    isEmpty(i, j) {
-        return this.content[i][j].isEmpty;
-    }
-
-    setNeightbors(i, j, num) {
-        this.content[i][j].numNeighborMines = num;
     }
 
 };  
