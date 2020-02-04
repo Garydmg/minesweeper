@@ -56,13 +56,6 @@ class Board {
     /**
      * Getters and setters
      */
-    checkBound(i, j) {
-        if (i >= 0 && i < this.size && j >= 0 && j < this.size) {
-            return true;
-        }
-        return false;
-    }
-
     isRevealed(i, j) {
         return this.content[i][j].isRevealed;
     }
@@ -92,7 +85,42 @@ class Board {
         // range from 0 to size - 1
         return Math.floor(Math.random() * size);
     }
-    
+
+    /**
+     * Utility functions
+     */
+    checkBound(i, j) {
+        if (i >= 0 && i < this.size && j >= 0 && j < this.size) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Count number of mines in all directions around (i, j)
+     */
+    countMines(i, j) {
+        let count = 0;
+        for (const dir of this.directions) {
+            let rowPos = i + dir[0];
+            let colPos = j + dir[1];
+            if (this.checkBound(rowPos, colPos)) {
+                if (this.isMine(rowPos, colPos)) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    numCellsUnrevealed() {
+        return this.size * this.size - this.numCellsRevealed - this.numbered;
+    }
+
+    isWinning() {
+        return (this.numCellsUnrevealed() === parseInt(this.numMines)) ? true : false;
+    }
+
     /**
      * Click to reveal part of the board that represents # of mines nearby
      * @param i, j: row and col number
@@ -136,35 +164,6 @@ class Board {
                 }
             }
         }
-    }
-    
-    /**
-     * Count number of mines in all directions around (i, j)
-     */
-    countMines(i, j) {
-        let count = 0;
-        for (const dir of this.directions) {
-            let rowPos = i + dir[0];
-            let colPos = j + dir[1];
-            if (this.checkBound(rowPos, colPos)) {
-                if (this.isMine(rowPos, colPos)) {
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
-    numCellsUnrevealed() {
-        return this.size * this.size - this.numCellsRevealed - this.numbered;
-    }
-
-    /**
-     * Winning criterium:
-     * # mines left = total number of cells - numbers labeled - number revealed
-     */
-    isWinning() {
-        return (this.numCellsUnrevealed() === parseInt(this.numMines)) ? true : false;
     }
 
     

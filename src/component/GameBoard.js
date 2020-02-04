@@ -99,6 +99,7 @@ export default class GameBoard extends Component {
         return (
             <div className="game-area">
                 <div className="menu">
+                    <h2>Step 1: Select your Settings</h2>
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Board Size
@@ -122,7 +123,7 @@ export default class GameBoard extends Component {
                     </form>
                 </div>
                 <div>
-                    <h2>Your challenge</h2>
+                    <h2>Step 2: Start the Challenge</h2>
                     <p>Board size: {board.size}</p>
                     <p>
                         There are {board.numMines} mines contained in {board.numCellsUnrevealed()} unrevealed cells
