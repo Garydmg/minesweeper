@@ -5,11 +5,41 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(51, 0, 146);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.title {
+  color: white;
+}
+
+.menu {
+  border-bottom: 1px solid rgb(206, 206, 206);
+}
+
+.menu, .game-wrapper, .button {
+  text-align: center;
+  margin: 10px auto 40px auto;
+}
+
+.game-area {
+  text-align: center;
+  width: 80%;
+  padding-top: 35px;
+  padding-bottom: 50px;
+  background-color: rgb(239, 234, 255);
+  border-radius: 50px;
+  margin: 0 auto;
+}
+
+.board-info {
+  display: table;
+  background-color: grey;
+  margin: 0 auto;
 }
 
 .cell {
@@ -24,6 +54,7 @@ code {
   border-radius: 5px;
   cursor: pointer;
 }
+
 .cell:hover {
   background-color: rgb(0, 0, 0);
 }
@@ -32,9 +63,9 @@ code {
   height: 40px;
 }
 
-.tile, .numNeighbors {
-  width: 15px;
-  height: 15px;
+.tile {
+  width: 35px;
+  height: 35px;
 }
 
 .input-box {
@@ -54,4 +85,9 @@ code {
   background-color: rgb(89, 0, 255);
   border-radius: 8px;
   border: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: rgb(51, 0, 146);
 }

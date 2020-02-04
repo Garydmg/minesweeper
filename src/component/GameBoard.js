@@ -30,17 +30,18 @@ export default class GameBoard extends Component {
      */
     revealNeighbors = (rowNum, colNum) => {
         const { board } = this.state;
+        if (board.isWinning()) {
+            return;
+        }
         if (board.isRevealed(rowNum, colNum)) return;
         if (board.isMine(rowNum, colNum)) {
-            alert("Game Over: You just stepped on a mine!");
             board.revealAll();
-            return;
         }
         
         this.setState({
             board: this.state.board.getNeighborMines(rowNum, colNum)
         }, () => {
-
+            console.log(board.gameOver);
         });  
     }
 
@@ -58,14 +59,16 @@ export default class GameBoard extends Component {
      * Render 2D board row by row
      */
     renderRows = (data, icons) => {
+        const { board } = this.state;
         return data.map((item) => {
             const {rowNum, colNum} = item;
             return (
                 <div className="cell" key={rowNum * data.length + colNum}>
                     <Cell 
                         cellContent={item} 
-                        cellIcons={icons}
+                        icons={icons}
                         onClick={() => this.revealNeighbors(rowNum, colNum)}
+                        gameOver={board.gameOver}
                     />
                 </div>
             )
@@ -86,10 +89,16 @@ export default class GameBoard extends Component {
     
     render() {
         const { board, icons } = this.state;
-        let message = board.isWinning() ? <h2>Congrats! You win the game!</h2> : <h2>{}</h2>
+        // happy face emoji
+        let messageWin = board.isWinning() ? 
+            <h2>Congrats! You win the game! {String.fromCodePoint(128512)}</h2> : <h2>{}</h2>
+        // s*** face emoji
+        let messageLose = board.gameOver ? 
+            <h2>Game over! You just stepped on a bomb {String.fromCodePoint(128169)}</h2> : <h2>{}</h2>
+        
         return (
-            <div>
-                <div className="param">
+            <div className="game-area">
+                <div className="menu">
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Board Size
@@ -119,13 +128,14 @@ export default class GameBoard extends Component {
                         There are {board.numMines} mines contained in {board.numCellsUnrevealed()} unrevealed cells
                     </p>
                 </div>
+                <div className="message">
+                    {messageWin}
+                    {messageLose}
+                </div>
                 <div className="board-info">
                     {
                         this.renderBoard(board.content, icons)
                     }
-                </div>
-                <div className="winning-message">
-                    {message}
                 </div>
             </div>
         );

@@ -7,6 +7,7 @@ class Board {
         this.numMines = numMines;
         this.numCellsRevealed = 0;
         this.numbered = 0;
+        this.gameOver = false;
         this.content = this.initializeBoard(n, numMines);
         this.directions = [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]];
     }
@@ -99,7 +100,8 @@ class Board {
     getNeighborMines(i, j) {
         // game over
         if (this.isMine(i, j)) {
-            return -1;
+            this.gameOver = true;
+            return this;
         }
         this.dfs(i, j);
         return this;
@@ -173,6 +175,9 @@ class Board {
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++) {
                 this.setRevealed(i, j);
+                const count = this.countMines(i, j);
+                this.setNeightborMines(i, j, count);
+
             }
         }
     }
