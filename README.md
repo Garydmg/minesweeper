@@ -25,10 +25,10 @@ Launches the test runner in the interactive watch mode.<br />
 
 Click to see code directly:
 * [Game Entry Point](https://github.com/Garydmg/minesweeper/blob/source/src/Minesweeper.js)
-* [Board API] (https://github.com/Garydmg/minesweeper/blob/source/src/Board.js)
-* [GameBoard Component] (https://github.com/Garydmg/minesweeper/blob/source/src/component/GameBoard.js)
-* [Cell Component] (https://github.com/Garydmg/minesweeper/blob/source/src/component/Cell.js)
-* [Solver] (https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
+* [Board API](https://github.com/Garydmg/minesweeper/blob/source/src/Board.js)
+* [GameBoard Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/GameBoard.js)
+* [Cell Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/Cell.js)
+* [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
 
 ## Part B: Puzzle Solver
 ## 1. How to Run
