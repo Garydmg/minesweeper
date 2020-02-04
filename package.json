@@ -2,6 +2,7 @@
   "name": "javascript",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://garydmg.github.io/minesweeper",
   "dependencies": {
     "@babel/core": "7.7.4",
     "@svgr/webpack": "4.3.3",
@@ -135,5 +136,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^2.2.0"
   }
 }
