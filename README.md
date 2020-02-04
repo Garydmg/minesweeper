@@ -1,7 +1,10 @@
-## The game can be played here: 
+# Minesweeper
+## Part A: React.js Implementation
+### The game can be played here: 
 https://garydmg.github.io/minesweeper-deployed/
 
-## In the project directory, run `yarn install` then you can run:
+## 1. Setup
+### In the project directory, run `yarn install` then you can run:
 
 ### `yarn start`
 
@@ -15,6 +18,10 @@ You will also see any lint errors in the console.
 
 Launches the test runner in the interactive watch mode.<br />
 
+## Part B: Puzzle Solver
+## 1. How to Run
+Launches the run solver script with the given optional arguments. <br />
 ### `yarn solve [ n [ numMines [ numTrials ] ] ]`
 
-Launches the run solver script with the given optional arguments. <br />
+## 2. Algorithm
+TODO
