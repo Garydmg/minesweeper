@@ -3,6 +3,8 @@
 ### The game can be played here: 
 https://garydmg.github.io/minesweeper-deployed/
 
+<img src="https://github.com/Garydmg/minesweeper/blob/source/media/computer-view.png" width="450" height="650"/>
+
 ## 1. Setup
 #### In the project directory, run `yarn install` then you can run:
 
@@ -19,7 +21,7 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br />
 
 ## 2. Code Design
-
+<img src="https://github.com/Garydmg/minesweeper/blob/source/media/program-structure.png" width="350" height="350"/>
 
 ## Part B: Puzzle Solver
 ## 1. How to Run
