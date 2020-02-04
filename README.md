@@ -1,4 +1,6 @@
-## The game can be played here: https://garydmg.github.io/minesweeper-deployed/
+## The game can be played here: 
+https://garydmg.github.io/minesweeper-deployed/
+
 ## In the project directory, run `yarn install` then you can run:
 
 ### `yarn start`
