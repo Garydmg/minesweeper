@@ -79,6 +79,10 @@ class Board {
     isMarked(i, j) {
         return this.content[i][j].isMarked; 
     }
+    
+    markCell(i, j) {
+        this.content[i][j].isMarked = true;
+    }
 
     setNeightborMines(i, j, num) {
         this.content[i][j].numNeighborMines = num;

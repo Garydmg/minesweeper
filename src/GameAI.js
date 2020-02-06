@@ -23,28 +23,28 @@ class GameAI {
     
     // while game is not over
     while (this.untouched.length > this.board.numMines) {
-      console.log('==========START==========')
+      // console.log('==========START==========')
       this.printBoard();
       
       // if S is empty, choose a random square that is untouched
       if (S.size === 0) {
-        randomPoint = this.selectRandomSquare();
+        const randomPoint = this.selectRandomSquare();
         S.set(randomPoint.id, randomPoint.cell);
         SArray.push(randomPoint.cell);
       }
-      console.log('==========START==========')
+      // console.log('==========START==========')
     
       // when the safe-to-explore set is not empty
       while (S.size !== 0) {
         this.printBoard();
-        console.log('---------PRINT MAP-----------')
-        console.log(S);
+        // console.log('---------PRINT MAP-----------')
+        // console.log(S);
         // cell that needs to be removed from set
         const removed = SArray.pop();
         
         console.log('------------New move-------------')
         console.log("Considering: " + removed.rowNum + ", " + removed.colNum);
-        console.log(this.board.content[removed.rowNum][removed.colNum])
+        // console.log(this.board.content[removed.rowNum][removed.colNum])
         // remove by id
         S.delete(removed.id);
   
@@ -66,19 +66,61 @@ class GameAI {
           for (let cell of unmarked) {
             S.set(cell.id, cell);
             SArray.push(cell);
-            console.log("Add unmarked: " + cell.rowNum + ", " + cell.colNum);
+            // console.log("Add unmarked: " + cell.rowNum + ", " + cell.colNum);
           }
         }
         // if we do not have enough info, add the cell to Q
         else {
-          Q.set(removed.id, removed);
+            Q.set(removed.id, removed);
         }
       }
-      break;
 
       // loop over each cell in Q
+      // console.log("Loop over Q");
+      const iterator1 = Q.keys();
+      
+      let rm = [];
+      while (iterator1.next().value) {
+        const id = iterator1.next().value;
+        if (id === undefined) {
+          break;
+        }
+        const q = Q.get(id);
+        // console.log(q);
+        if (this.hasAllMineNeighbor(q.rowNum, q.colNum)) {
+          const unmarked = this.getUnMarkedNeighbors(q.rowNum, q.colNum);
+          for (let cell of unmarked) {
+            this.board.markCell(cell.rowNum, cell.colNum);
+          }
+          rm.push(id);
+        }
+      }
 
+      for (const id of rm) {
+        Q.delete(id);
+      }
 
+      rm = [];
+      while (iterator1.next().value) {
+        const id = iterator1.next().value;
+        if (id === undefined) {
+          break;
+        }
+        const q = Q.get(id);
+        if (this.hasAllFreeNeigbor(q.rowNum, q.colNum)) {
+          const unmarked = this.getUnMarkedNeighbors(q.rowNum, q.colNum);
+          for (let cell of unmarked) {
+            S.set(cell.id, cell);
+            SArray.push(cell);
+            // console.log("Add unmarked: " + cell.rowNum + ", " + cell.colNum);
+          }
+          rm.push(id);
+        }
+      }
+
+      for (const id of rm) {
+        Q.delete(id);
+      }
     }
 
     return true;
@@ -138,10 +180,10 @@ class GameAI {
 
     // time bottleneck:
     let idx = 0;
-    console.log('--------------------------------------')
-    console.log("Probe");
-    console.log(this.untouched);
-    console.log(this.untouched.length);
+    // console.log('--------------------------------------')
+    // console.log("Probe");
+    // console.log(this.untouched);
+    // console.log(this.untouched.length);
 
     for (const c of this.untouched) {
       // console.log("Index: " + idx);
@@ -160,8 +202,8 @@ class GameAI {
     const size = this.untouched.length;
     this.swap(this.untouched, idx, size - 1);
     this.untouched.pop();
-    console.log('----------------after probe---------------')
-    console.log(this.printBoard());
+    // console.log('----------------after probe---------------')
+    // console.log(this.printBoard());
   }
 
   boardToArray(board) {
@@ -204,7 +246,7 @@ class GameAI {
     const cell = this.untouched.pop();
     return {
       id: cell.id,
-      randomCell: cell
+      cell
     };
   }
 
@@ -222,7 +264,7 @@ class GameAI {
         let colPos = j + dir[1];
         if (this.board.checkBound(rowPos, colPos)) {
             if (this.board.isMarked(rowPos, colPos)) {
-                markedNeighbors.push(this.content[rowPos][colPos]);
+                markedNeighbors.push(this.board.content[rowPos][colPos]);
             }
         }
     }
@@ -246,7 +288,7 @@ class GameAI {
               !this.board.isRevealed(rowPos, colPos) &&
               !this.board.isNumbered(rowPos, colPos)) {
                 // TODO: write a getter 
-                console.log("(" + rowPos + ", " + colPos + " is unmarked");
+                // console.log("(" + rowPos + ", " + colPos + " is unmarked");
                 unmarkedNeighbors.push(this.board.content[rowPos][colPos]);
           }
       }
