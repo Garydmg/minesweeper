@@ -1,3 +1,5 @@
+const uuidv4 = require('uuid/v4');
+
 /**
  * Board API
  */
@@ -23,11 +25,13 @@ class Board {
             // build columns
             for (let j = 0; j < size; j++) {
                 board[i][j] = {
+                    id: uuidv4(),
                     rowNum: i,
                     colNum: j,
                     isMine: false,
                     isNumbered: false,
                     isRevealed: false,
+                    isMarked: false,
                     numNeighborMines: 0
                 }
             }
@@ -72,6 +76,10 @@ class Board {
         return this.content[i][j].isEmpty;
     }
 
+    isMarked(i, j) {
+        return this.content[i][j].isMarked; 
+    }
+
     setNeightborMines(i, j, num) {
         this.content[i][j].numNeighborMines = num;
         this.content[i][j].isNumbered = true;
@@ -84,6 +92,10 @@ class Board {
     getRandom(size) {
         // range from 0 to size - 1
         return Math.floor(Math.random() * size);
+    }
+
+    getNumNeightborMines(i, j) {
+        return this.content[i][j].numNeighborMines;
     }
 
     /**
@@ -113,6 +125,8 @@ class Board {
         return count;
     }
 
+
+
     numCellsUnrevealed() {
         return this.size * this.size - this.numCellsRevealed - this.numbered;
     }
@@ -125,7 +139,7 @@ class Board {
      * Click to reveal part of the board that represents # of mines nearby
      * @param i, j: row and col number
      */
-    getNeighborMines(i, j) {
+    probe(i, j) {
         // game over
         if (this.isMine(i, j)) {
             this.gameOver = true;

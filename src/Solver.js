@@ -1,15 +1,10 @@
+const game = require('./GameAI');
+
 // TODO: Takes a board and attempts to solve the board. 
 // Return a boolean indicating if the board was successfully solved.
-function solve(boardObj) {
-    const size = boardObj.size;
-    let board = boardObj.content;
-    
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            console.log(board[i][j]);
-        }
-    }
-    return true;
+function solve(board) {
+    const solution = new game.GameAI(board);
+    return solution.singlePointAlgorithm();
 } 
 
 // Leave as CommonJs for runSolver
