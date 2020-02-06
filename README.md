@@ -36,4 +36,40 @@ Launches the run solver script with the given optional arguments. <br />
 #### `yarn solve [ n [ numMines [ numTrials ] ] ]`
 
 ## 2. Algorithm
-TODO
+This solver implements a Double-Set-Single-Point (DSSP) strategy proposed [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. The pseudo-code is illustrated below:
+```javascript
+  firstStep = firstMove()
+  S = new Set()
+  Q = new Set()
+  S.add(firstStep)
+  
+  while game is not over:
+    if S is empty:
+      x = selectRandomSquare()
+      S.add(x)  
+    
+    while S is not empty:
+      x = S.remove()
+      probe(x)
+      if x is mine:
+        return failure
+      if AFN(x):
+        S.add(unmarkedNeighbors(x))
+      else:
+        Q.add(x)
+    
+    for q in Q:
+      if AMN(q):
+        for y in unmarkedNeighbors(q):
+          mark(y)
+        Q.remove(q)
+     
+     for q in Q:
+      if AFN(q):
+        S.add(unmarkedNeighbors(q))
+        Q.remove(q)
+ 
+        
+    
+```
+
