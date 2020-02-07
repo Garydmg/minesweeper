@@ -54,11 +54,15 @@ Go to [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
 ```
 
 ## 2. Algorithm
-This solver implements a Double-Set-Single-Point (DSSP) strategy proposed [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. The pseudo-code is illustrated below:
+This solver implements a Double-Set-Single-Point (DSSP) strategy. For more information, check [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. 
+
+For 10 by 10 puzzle with 10 mines, the chance of winning for this algorithm is around 72%. Similar to what's been obtained in the paper. 
+
+The pseudo-code is illustrated below:
 ```javascript
   firstStep = firstMove()
-  S = new Set()
-  Q = new Set()
+  S = new Set()   // "safe" cells to explore
+  Q = new Set()   // cells that need more information about neighbors
   S.add(firstStep)
   
   while game is not over:
@@ -68,26 +72,23 @@ This solver implements a Double-Set-Single-Point (DSSP) strategy proposed [here]
     
     while S is not empty:
       x = S.remove()
-      probe(x)
+      probe(x)    // probe means uncover
       if x is mine:
         return failure
-      if AFN(x):
+      if AFN(x):   // all-free-neighbor: # neighbor mines - marked cells == 0
         S.add(unmarkedNeighbors(x))
       else:
         Q.add(x)
     
     for q in Q:
-      if AMN(q):
+      if AMN(q):   // all-mines-neighbor: # neighbor mines - marked cells == # of unmarked cells
         for y in unmarkedNeighbors(q):
-          mark(y)
+          mark(y)   // mark cell y as mine
         Q.remove(q)
      
      for q in Q:
       if AFN(q):
         S.add(unmarkedNeighbors(q))
-        Q.remove(q)
- 
-        
-    
+        Q.remove(q)  
 ```
 
