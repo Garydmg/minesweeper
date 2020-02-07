@@ -23,18 +23,29 @@ Launches the test runner in the interactive watch mode.<br />
 ## 2. Code Design
 <img src="https://github.com/Garydmg/minesweeper/blob/source/media/design.png" width="350" height="380"/>
 
-Click to see code directly:
+#### Click to see code directly:
+## React.js Components
 * [Game Entry Point](https://github.com/Garydmg/minesweeper/blob/source/src/Minesweeper.js)
-* [Board API](https://github.com/Garydmg/minesweeper/blob/source/src/Board.js)
 * [GameBoard Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/GameBoard.js)
 * [Cell Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/Cell.js)
+
+## Board API
+* [Board API](https://github.com/Garydmg/minesweeper/blob/source/src/Board.js)
+
+## Human Player
+* [Player](https://github.com/Garydmg/minesweeper/blob/source/src/Player.js)
+
+# Computer Player
 * [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
+* [GameAI](https://github.com/Garydmg/minesweeper/blob/source/src/GameAI.js)
+
 
 ## Part B: Puzzle Solver
 ## 1. How to Run
 Launches the run solver script with the given optional arguments. <br />
 #### `yarn solve [ n [ numMines [ numTrials ] ] ]`
-#### `yarn solve` automatically solves the 10 * 10 puzzle with 10 mines 100,000 times
+#### `yarn solve` 
+automatically solves the 10 * 10 puzzle with 10 mines 100,000 times
 
 ## 2. Algorithm
 This solver implements a Double-Set-Single-Point (DSSP) strategy proposed [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. The pseudo-code is illustrated below:
