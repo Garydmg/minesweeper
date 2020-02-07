@@ -56,7 +56,7 @@ Go to [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
 ## 2. Algorithm
 This solver implements a Double-Set-Single-Point (DSSP) strategy. For more information, check [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. 
 
-Solving 10 by 10 puzzle with 10 mines 100,000 times (each time is a different puzzle), the chance of winning is around 72%, which is similar to what's been obtained in the paper. The run time is within 35 seconds. 
+Solving a 10 by 10 puzzle with 10 mines 100,000 times (each time is a different puzzle), the chance of winning is around 72%, which is similar to what's been obtained in the paper. The run time is within 35 seconds. 
 
 The pseudo-code is illustrated below:
 ```javascript
