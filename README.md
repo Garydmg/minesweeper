@@ -21,7 +21,7 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.<br />
 
 ## 2. Code Design
-<img src="https://github.com/Garydmg/minesweeper/blob/source/media/program-structure.png" width="350" height="350"/>
+<img src="https://github.com/Garydmg/minesweeper/blob/source/media/design.png" width="350" height="350"/>
 
 Click to see code directly:
 * [Game Entry Point](https://github.com/Garydmg/minesweeper/blob/source/src/Minesweeper.js)
