@@ -47,6 +47,12 @@ Launches the run solver script with the given optional arguments. <br />
 #### `yarn solve` 
 automatically solves the 10 * 10 puzzle with 10 mines 100,000 times
 
+### If you want to see step-by-step solution for GameAI
+Go to [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js):
+```javascript
+  const printSteps = false; // set this to true
+```
+
 ## 2. Algorithm
 This solver implements a Double-Set-Single-Point (DSSP) strategy proposed [here](https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1) in Chapter 5.3. The pseudo-code is illustrated below:
 ```javascript
