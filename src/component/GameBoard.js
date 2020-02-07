@@ -29,7 +29,7 @@ export default class GameBoard extends Component {
         this.setState({
             player: this.state.player.probe(rowNum, colNum)
         }, () => {
-            console.log(player.gameOver);
+            // console.log(player.gameOver);
         });  
     }
 
@@ -41,7 +41,7 @@ export default class GameBoard extends Component {
         this.setState({
             player: new Player(this.boardSize.value, this.numMines.value)
         }, () => {
-            console.log(this.state.player);
+            // console.log(this.state.player);
         });
     }
 

@@ -4,7 +4,7 @@ const game = require('./GameAI');
 // Return a boolean indicating if the board was successfully solved.
 function solve(board) {
     const solution = new game.GameAI(board);
-    const printSteps = true;
+    const printSteps = false;
     return solution.singlePointAlgorithm(printSteps);
 } 
 
