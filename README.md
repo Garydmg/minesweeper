@@ -23,19 +23,19 @@ Launches the test runner in the interactive watch mode.<br />
 ## 2. Code Design
 <img src="https://github.com/Garydmg/minesweeper/blob/source/media/design.png" width="350" height="380"/>
 
-#### Click to see code directly:
-## React.js Components
+### Click to see code directly:
+#### React.js Components
 * [Game Entry Point](https://github.com/Garydmg/minesweeper/blob/source/src/Minesweeper.js)
 * [GameBoard Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/GameBoard.js)
 * [Cell Component](https://github.com/Garydmg/minesweeper/blob/source/src/component/Cell.js)
 
-## Board API
+#### Board API
 * [Board API](https://github.com/Garydmg/minesweeper/blob/source/src/Board.js)
 
-## Human Player
+#### Human Player
 * [Player](https://github.com/Garydmg/minesweeper/blob/source/src/Player.js)
 
-# Computer Player
+#### Computer Player
 * [Solver](https://github.com/Garydmg/minesweeper/blob/source/src/Solver.js)
 * [GameAI](https://github.com/Garydmg/minesweeper/blob/source/src/GameAI.js)
 
