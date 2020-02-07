@@ -7,11 +7,7 @@ class Board {
     constructor(n, numMines) {
         this.size = n;
         this.numMines = numMines;
-        this.numCellsRevealed = 0;
-        this.numbered = 0;
-        this.gameOver = false;
         this.content = this.initializeBoard(n, numMines);
-        this.directions = [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]];
     }
     
     /**
@@ -61,35 +57,59 @@ class Board {
      * Getters and setters
      */
     isRevealed(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].isRevealed;
     }
 
     isNumbered(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].isNumbered;
     }
 
     isMine(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].isMine;
     }
     
     isEmpty(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].isEmpty;
     }
 
     isMarked(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].isMarked; 
     }
     
     markCell(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         this.content[i][j].isMarked = true;
     }
 
     setNeightborMines(i, j, num) {
+        if (!this.checkBound(i, j)) {
+            return false;
+        }
         this.content[i][j].numNeighborMines = num;
         this.content[i][j].isNumbered = true;
     }
 
     setRevealed(i, j) {
+        if (!this.checkBound(i, j)) {
+            return false;
+        }
         this.content[i][j].isRevealed = true;
     }
 
@@ -99,6 +119,9 @@ class Board {
     }
 
     getNumNeightborMines(i, j) {
+        if (!this.checkBound(i, j)) {
+            return -1;
+        }
         return this.content[i][j].numNeighborMines;
     }
 
@@ -116,8 +139,9 @@ class Board {
      * Count number of mines in all directions around (i, j)
      */
     countMines(i, j) {
+        const directions = [[-1,-1],[-1,0],[-1,1],[0,1],[1,1],[1,0],[1,-1],[0,-1]];
         let count = 0;
-        for (const dir of this.directions) {
+        for (const dir of directions) {
             let rowPos = i + dir[0];
             let colPos = j + dir[1];
             if (this.checkBound(rowPos, colPos)) {
@@ -127,61 +151,6 @@ class Board {
             }
         }
         return count;
-    }
-
-
-
-    numCellsUnrevealed() {
-        return this.size * this.size - this.numCellsRevealed - this.numbered;
-    }
-
-    isWinning() {
-        return (this.numCellsUnrevealed() === parseInt(this.numMines)) ? true : false;
-    }
-
-    /**
-     * Click to reveal part of the board that represents # of mines nearby
-     * @param i, j: row and col number
-     */
-    probe(i, j) {
-        // game over
-        if (this.isMine(i, j)) {
-            this.gameOver = true;
-            return this;
-        }
-        this.dfs(i, j);
-        return this;
-    }
-
-    /**
-     * Use depth-first search to recursively find # of nearby mines
-     */
-    dfs(i, j) {
-        let count = this.countMines(i, j);
-
-        // if there is a count, no need to recurse further
-        if (count !== 0) {
-            if (!this.isNumbered(i, j)) {
-                this.setNeightborMines(i, j, count);
-                this.numbered++;
-            }
-            return;
-        }
-        // if there is no count, mark current location as visited/revealed
-        this.setRevealed(i, j);
-        this.numCellsRevealed++;
-
-        // check all 8 directions
-        for (const dir of this.directions) {
-            let rowPos = i + dir[0];
-            let colPos = j + dir[1];
-            if (this.checkBound(rowPos, colPos)) {
-                // if it is not visited and not a mine, visit it
-                if (!this.isRevealed(rowPos, colPos) && !this.isMine(rowPos, colPos)) {
-                    this.dfs(rowPos, colPos);
-                }
-            }
-        }
     }
 
     
@@ -194,7 +163,6 @@ class Board {
                 this.setRevealed(i, j);
                 const count = this.countMines(i, j);
                 this.setNeightborMines(i, j, count);
-
             }
         }
     }

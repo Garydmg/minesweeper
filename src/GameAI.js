@@ -1,5 +1,7 @@
 /**
  * GameAI implements algorithms for solving the puzzle
+ * Algorithm implemented from pseudocode here: 
+ * https://dash.harvard.edu/bitstream/handle/1/14398552/BECERRA-SENIORTHESIS-2015.pdf?sequence=1
  */
 
 class GameAI {
@@ -106,7 +108,7 @@ class GameAI {
   }
 
   /**
-   * Probe means: reveal the cell (mine/numMines) + remove from untouched array
+   * Probe: reveal the cell ("click") + remove it from untouched array
    */
   probe(cell) {
     const { id, rowNum, colNum } = cell;
@@ -165,7 +167,6 @@ class GameAI {
 
   /**
    * Select a random cell that is not marked or uncovered and remove it
-   * Return its unique id
    */
   selectRandomSquare() {
     const size = this.untouched.length;
@@ -222,20 +223,19 @@ class GameAI {
   }
 
 
-
   computeEffectiveLabels(i, j) {
     return this.board.getNumNeightborMines(i, j) - this.getMarkedNeighbors(i, j).length;
   }
 
   /**
-   * AFN Definition: when effective label of point is 0
+   * AFN Definition: when effective label of a cell is 0
    */
   hasAllFreeNeigbor(i, j) {
     return this.computeEffectiveLabels(i, j) === 0;
   }
 
   /**
-   * AMN Definition: 
+   * AMN Definition: when effective lable of a cell == # of unmarked neighbors
    */
   hasAllMineNeighbor(i, j) {
     return this.computeEffectiveLabels(i, j) === this.getUnMarkedNeighbors(i, j).length;

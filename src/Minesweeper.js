@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Board from './Board';
+import Player from './Player';
 import GameBoard from './component/GameBoard';
 import './index.css';
 
@@ -11,7 +11,7 @@ class Minesweeper extends Component {
         this.state = {
             size,
             numMines,
-            board: new Board(size, numMines),
+            player: new Player(size, numMines),
             icons: {
                 blank: 'http://i.imgur.com/HM1e3Tbb.jpg',
                 pressed: 'http://i.imgur.com/bGT8xGEb.jpg',
@@ -41,7 +41,7 @@ class Minesweeper extends Component {
                     <h1>Minesweeper</h1>
                 </div>
                 <GameBoard 
-                    board={this.state.board} 
+                    player={this.state.player} 
                     icons={this.state.icons}
                 />
             </div>

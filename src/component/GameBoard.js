@@ -1,26 +1,13 @@
 import React, { Component } from 'react';
 import Cell from './Cell';
-import Board from '../Board';
+import Player from '../Player';
 
 export default class GameBoard extends Component {
-    /**
-     * props:
-     * board
-        - getNeighborMines(i, j)
-
-       icons
-        - blank
-        - pressed
-        - exposedBomb
-        - explodedBomb
-        - flag
-        - bombs: [] 0-8
-     */
     constructor(props) {
         super(props);
-        const { board, icons } = this.props;
+        const { player, icons } = this.props;
         this.state = {
-            board,
+            player,
             icons
         };
     }
@@ -29,8 +16,9 @@ export default class GameBoard extends Component {
      * Reveal number of mines around where we click
      */
     revealNeighbors = (rowNum, colNum) => {
-        const { board } = this.state;
-        if (board.isWinning()) {
+        const { player } = this.state;
+        const board = player.board;
+        if (player.isWinning()) {
             return;
         }
         if (board.isRevealed(rowNum, colNum)) return;
@@ -39,9 +27,9 @@ export default class GameBoard extends Component {
         }
         
         this.setState({
-            board: this.state.board.probe(rowNum, colNum)
+            player: this.state.player.probe(rowNum, colNum)
         }, () => {
-            console.log(board.gameOver);
+            console.log(player.gameOver);
         });  
     }
 
@@ -51,9 +39,9 @@ export default class GameBoard extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.setState({
-            board: new Board(this.boardSize.value, this.numMines.value)
+            player: new Player(this.boardSize.value, this.numMines.value)
         }, () => {
-            console.log(this.state.board);
+            console.log(this.state.player);
         });
     }
 
@@ -61,7 +49,7 @@ export default class GameBoard extends Component {
      * Render 2D board row by row
      */
     renderRows = (data, icons) => {
-        const { board } = this.state;
+        const { player } = this.state;
         return data.map((item) => {
             const {rowNum, colNum} = item;
             return (
@@ -70,7 +58,7 @@ export default class GameBoard extends Component {
                         cellContent={item} 
                         icons={icons}
                         onClick={() => this.revealNeighbors(rowNum, colNum)}
-                        gameOver={board.gameOver}
+                        gameOver={player.gameOver}
                     />
                 </div>
             )
@@ -90,12 +78,12 @@ export default class GameBoard extends Component {
     }
     
     render() {
-        const { board, icons } = this.state;
+        const { player, icons } = this.state;
         // happy face emoji
-        let messageWin = board.isWinning() ? 
+        let messageWin = player.isWinning() ? 
             <h2>Congrats! You win the game! {String.fromCodePoint(128512)}</h2> : <h2>{}</h2>
         // s*** face emoji
-        let messageLose = board.gameOver ? 
+        let messageLose = player.gameOver ? 
             <h2>Game over! You just stepped on a bomb {String.fromCodePoint(128169)}</h2> : <h2>{}</h2>
         
         return (
@@ -126,9 +114,9 @@ export default class GameBoard extends Component {
                 </div>
                 <div>
                     <h2>Step 2: Start the Challenge</h2>
-                    <p>Board size: {board.size}</p>
+                    <p>Board size: {player.board.size}</p>
                     <p>
-                        There are {board.numMines} mines contained in {board.numCellsUnrevealed()} unrevealed cells
+                        There are {player.board.numMines} mines contained in {player.numCellsUnrevealed()} unrevealed cells
                     </p>
                 </div>
                 <div className="message">
@@ -137,7 +125,7 @@ export default class GameBoard extends Component {
                 </div>
                 <div className="board-info">
                     {
-                        this.renderBoard(board.content, icons)
+                        this.renderBoard(player.board.content, icons)
                     }
                 </div>
             </div>
