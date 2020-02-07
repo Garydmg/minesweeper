@@ -199,6 +199,47 @@ class Board {
         }
     }
 
+    /**
+     * Print board on terminal
+     */
+    printBoard() {
+        console.log("<========== Board: Actual ==========>")
+        for (let i = 0; i < this.size; i++) {
+          let row = '';
+          for (let j = 0; j < this.size; j++) {
+            let cell;
+            if (this.isMine(i, j)) {
+              cell = 'X';
+            }
+            else {
+              cell = '.';
+            }
+            row += cell;
+          }
+          console.log(row)
+        }
+
+        console.log("<========== Board: What user sees ==========>");
+        for (let i = 0; i < this.size; i++) {
+          let row = '';
+          for (let j = 0; j < this.size; j++) {
+            let cell;
+            if (this.isMarked(i, j)) {
+              cell = 'M';
+            }
+            else if (this.isNumbered(i, j)) {
+              const num = this.getNumNeightborMines(i, j);
+              cell = num === 0 ? '*' : num;
+            }
+            else {
+              cell = '.';
+            }
+            row += cell;
+          }
+          console.log(row)
+        }
+    }
+
 };  
 
 // Leave as CommonJS for runSolver

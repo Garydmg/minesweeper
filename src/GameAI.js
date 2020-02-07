@@ -8,7 +8,7 @@ class GameAI {
     this.untouched = this.boardToArray(this.board);
   }
 
-  singlePointAlgorithm() {
+  singlePointAlgorithm(printSteps = false) {
     this.untouched = this.boardToArray(this.board);
 
     // key: unique id, value: cell
@@ -16,15 +16,15 @@ class GameAI {
     let SArray = []; // stores same content as S, assist S for deletion
     let Q = new Map(); // cells that need more information regarding neighbors
 
-    console.log("Algorithm starts here");
     const opener = this.firstMove();
     S.set(opener.id, opener);
     SArray.push(opener);
+
+    let iteration = 0;
     
     // while game is not over
     while (this.untouched.length > this.board.numMines) {
-      // console.log('==========START==========')
-      this.printBoard();
+      iteration++;
       
       // if S is empty, choose a random square that is untouched
       if (S.size === 0) {
@@ -32,28 +32,26 @@ class GameAI {
         S.set(randomPoint.id, randomPoint.cell);
         SArray.push(randomPoint.cell);
       }
-      // console.log('==========START==========')
-    
-      // when the safe-to-explore set is not empty
+
       while (S.size !== 0) {
-        this.printBoard();
-        // console.log('---------PRINT MAP-----------')
-        // console.log(S);
-        // cell that needs to be removed from set
+        if (printSteps) {
+          console.log(this.board.printBoard());
+        }
+
         const removed = SArray.pop();
-        
-        console.log('------------New move-------------')
-        console.log("Considering: " + removed.rowNum + ", " + removed.colNum);
-        // console.log(this.board.content[removed.rowNum][removed.colNum])
-        // remove by id
         S.delete(removed.id);
+
+        if (printSteps) {
+          // step-by-step: where AI chooses to click the cell
+          console.log(`Consider: (${removed.rowNum}, ${removed.colNum})`);
+        }
   
         // uncover the removed cell
         this.probe(removed);
           
         // if the removed contains a mine, game over
         if (this.board.isMine(removed.rowNum, removed.colNum)) {
-          console.log("GAME OVER");
+          console.log(`GAME OVER: died at iteration: ${iteration}`);
           return false;
         }
 
@@ -61,12 +59,9 @@ class GameAI {
         if (this.hasAllFreeNeigbor(removed.rowNum, removed.colNum)) {
           // add all unmarked neighbors to S
           const unmarked = this.getUnMarkedNeighbors(removed.rowNum, removed.colNum);
-          // console.log('------------UNMARKED move-------------')
-          // console.log(unmarked);
           for (let cell of unmarked) {
             S.set(cell.id, cell);
             SArray.push(cell);
-            // console.log("Add unmarked: " + cell.rowNum + ", " + cell.colNum);
           }
         }
         // if we do not have enough info, add the cell to Q
@@ -74,25 +69,16 @@ class GameAI {
             Q.set(removed.id, removed);
         }
       }
-
-      // loop over each cell in Q
-      // console.log("Loop over Q");
-      const iterator1 = Q.keys();
       
+      // list of ids to be removed from Q
       let rm = [];
-      while (iterator1.next().value) {
-        const id = iterator1.next().value;
-        if (id === undefined) {
-          break;
-        }
-        const q = Q.get(id);
-        // console.log(q);
-        if (this.hasAllMineNeighbor(q.rowNum, q.colNum)) {
-          const unmarked = this.getUnMarkedNeighbors(q.rowNum, q.colNum);
+      for (const [key, value] of Q) {
+        if (this.hasAllMineNeighbor(value.rowNum, value.colNum)) {
+          const unmarked = this.getUnMarkedNeighbors(value.rowNum, value.colNum);
           for (let cell of unmarked) {
             this.board.markCell(cell.rowNum, cell.colNum);
           }
-          rm.push(id);
+          rm.push(key);
         }
       }
 
@@ -101,69 +87,22 @@ class GameAI {
       }
 
       rm = [];
-      while (iterator1.next().value) {
-        const id = iterator1.next().value;
-        if (id === undefined) {
-          break;
-        }
-        const q = Q.get(id);
-        if (this.hasAllFreeNeigbor(q.rowNum, q.colNum)) {
-          const unmarked = this.getUnMarkedNeighbors(q.rowNum, q.colNum);
+      for (const [key, value] of Q) {
+        if (this.hasAllFreeNeigbor(value.rowNum, value.colNum)) {
+          const unmarked = this.getUnMarkedNeighbors(value.rowNum, value.colNum);
           for (let cell of unmarked) {
             S.set(cell.id, cell);
             SArray.push(cell);
-            // console.log("Add unmarked: " + cell.rowNum + ", " + cell.colNum);
           }
-          rm.push(id);
+          rm.push(key);
         }
       }
 
       for (const id of rm) {
         Q.delete(id);
       }
-    }
-
-    return true;
   }
-
-  printBoard() {
-    const size = this.board.size;
-    const board = this.board.content;
-    console.log("-----Actual-------")
-    for (let i = 0; i < size; i++) {
-      let row = '';
-      for (let j = 0; j < size; j++) {
-        let cell;
-        if (this.board.isMine(i, j)) {
-          cell = 'X';
-        }
-        else {
-          cell = '.';
-        }
-        row += cell;
-      }
-      console.log(row)
-    }
-    console.log("----Game-------");
-    for (let i = 0; i < size; i++) {
-      let row = '';
-      for (let j = 0; j < size; j++) {
-        let cell;
-        if (this.board.isMarked(i, j)) {
-          cell = 'M';
-        }
-        else if (this.board.isNumbered(i, j)) {
-          const num = this.board.getNumNeightborMines(i, j);
-          cell = num === 0 ? '*' : num;
-        }
-        else {
-          cell = '.';
-        }
-        row += cell;
-      }
-      console.log(row)
-    }
-
+    return true;
   }
 
   /**
@@ -178,32 +117,21 @@ class GameAI {
     const count = this.board.countMines(rowNum, colNum);
     this.board.setNeightborMines(rowNum, colNum, count);
 
-    // time bottleneck:
     let idx = 0;
-    // console.log('--------------------------------------')
-    // console.log("Probe");
-    // console.log(this.untouched);
-    // console.log(this.untouched.length);
 
     for (const c of this.untouched) {
-      // console.log("Index: " + idx);
-      // console.log(this.untouched.length);
-      // console.log(c);
       if (id === c.id) {
         break;
       }
       idx++;
     }
-    // this cell is already revealed
-    // S 
+    // if the cell is already revealed
     if (idx === this.untouched.length) {
       return;
     }
     const size = this.untouched.length;
     this.swap(this.untouched, idx, size - 1);
     this.untouched.pop();
-    // console.log('----------------after probe---------------')
-    // console.log(this.printBoard());
   }
 
   boardToArray(board) {
@@ -274,7 +202,7 @@ class GameAI {
   /**
    * How to define unmarked?
    * - not marked (flagged) as mines
-   * - not revealed (empty space)
+   * - not revealed (empty space) => definitely not labelled with numbers
    * - not labelled with numbers
    */
   getUnMarkedNeighbors(i, j) {
@@ -285,10 +213,7 @@ class GameAI {
       let colPos = j + dir[1];
       if (this.board.checkBound(rowPos, colPos)) {
           if (!this.board.isMarked(rowPos, colPos) &&
-              !this.board.isRevealed(rowPos, colPos) &&
-              !this.board.isNumbered(rowPos, colPos)) {
-                // TODO: write a getter 
-                // console.log("(" + rowPos + ", " + colPos + " is unmarked");
+              !this.board.isRevealed(rowPos, colPos)) {
                 unmarkedNeighbors.push(this.board.content[rowPos][colPos]);
           }
       }
