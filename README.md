@@ -90,5 +90,7 @@ The pseudo-code is illustrated below:
       if AFN(q):
         S.add(unmarkedNeighbors(q))
         Q.remove(q)  
+        
+   return success
 ```
 
