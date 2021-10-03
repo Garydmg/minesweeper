@@ -1,7 +1,5 @@
 # Minesweeper
 ## Part A: React.js Implementation
-### The game can be played here: 
-https://garydmg.github.io/minesweeper-deployed/
 
 <img src="https://github.com/Garydmg/minesweeper/blob/source/media/computer-view.png" width="450" height="650"/>
 
